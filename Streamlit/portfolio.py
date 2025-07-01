@@ -1,24 +1,50 @@
 import streamlit as st
 from datetime import datetime
+import os
+from PIL import Image
 
 # Configure page
 st.set_page_config(
-    page_title="Sai Kumar Srinivas | Data Analytics Portfolio",
+    page_title="SaiKumar Srinivas | Data Analytics Portfolio",
     page_icon="📊",
     layout="wide"
 )
 
-# CSS styling
 def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    try:
+        # Try to find the file in the same directory
+        path = os.path.join(os.path.dirname(__file__), file_name)
+        with open(path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    except FileNotFoundError:
+        # Fallback to basic styling if file not found
+        st.markdown("""
+        <style>
+            /* Basic fallback styles */
+            .stApp { background-color: #f5f5f5; }
+            h1 { color: #2c3e50; }
+            h2 { color: #3498db; }
+        </style>
+        """, unsafe_allow_html=True)
+        st.warning(f"CSS file '{file_name}' not found. Using basic styling.")
 
 local_css("style.css")
 
 # Header
+def load_image(image_path):
+    try:
+        # Try to find the file in the same directory
+        path = os.path.join(os.path.dirname(__file__), image_path)
+        return Image.open(path)
+    except FileNotFoundError:
+        st.warning(f"Image '{image_path}' not found. Using placeholder.")
+        # Return a blank image or placeholder
+        return Image.new('RGB', (150, 150), color='gray')
+
 col1, col2 = st.columns([1, 3])
 with col1:
-    st.image("profile.jpg", width=150)  # Replace with your profile image
+    img = load_image("profile.jpg")
+    st.image(img, width=150, caption="Your Name")
 
 with col2:
     st.title("Sai Kumar Srinivas")
