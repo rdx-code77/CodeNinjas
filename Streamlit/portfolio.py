@@ -44,10 +44,10 @@ def load_image(image_path):
 col1, col2 = st.columns([1, 3])
 with col1:
     img = load_image("profile.jpg")
-    st.image(img, width=150, caption="Your Name")
+    st.image(img, width=150, caption="SaiKumar Srinivas")
 
 with col2:
-    st.title("Sai Kumar Srinivas")
+    st.title("Saikumar Srinivas")
     st.subheader("Data Analytics Professional")
     st.write("""
     Worcester, MA | +1 (508) 365 9639 | 
@@ -173,10 +173,7 @@ elif section == "Skills":
         st.write("""
         - R
         - Python
-        - C#
-        - JavaScript
         - SQL
-        - HTML
         """)
         
         st.subheader("Database")
