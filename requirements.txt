@@ -8,3 +8,6 @@ memory_profiler
 streamlit
 scikit-learn
 openpyxl
+Pillow
+openai
+python-dotenv

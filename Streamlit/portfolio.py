@@ -63,7 +63,7 @@ with col2:
 st.markdown("---")
 st.sidebar.title("Navigation")
 section = st.sidebar.radio("Go to", 
-                          ["About", "Education", "Experience", "Projects", "Skills", "Contact"])
+                          ["About", "Education", "Experience", "Projects", "Skills", "Contact","Chat"])
 
 # About Section
 if section == "About":
