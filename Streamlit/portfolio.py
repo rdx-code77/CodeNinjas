@@ -52,7 +52,8 @@ with col2:
     st.write("""
     Worcester, MA | +1 (508) 365 9639 | 
     [saikumar.srinivas123@gmail.com](mailto:saikumar.srinivas123@gmail.com) | 
-    [LinkedIn](https://www.linkedin.com/in/saikumar-srinivas/)
+    [LinkedIn](https://www.linkedin.com/in/saikumar-srinivas/) |
+    [GitHub](https://github.com/rdx-code77)
     """)
     st.write("""
     Data Analyst with expertise in Snowflake, Power BI, Python, and Machine Learning. 
