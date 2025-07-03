@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime
 import os
 from PIL import Image
+import time  # For chat typing animation
 
 # Configure page
 st.set_page_config(
@@ -12,15 +13,12 @@ st.set_page_config(
 
 def local_css(file_name):
     try:
-        # Try to find the file in the same directory
         path = os.path.join(os.path.dirname(__file__), file_name)
         with open(path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
-        # Fallback to basic styling if file not found
         st.markdown("""
         <style>
-            /* Basic fallback styles */
             .stApp { background-color: #f5f5f5; }
             h1 { color: #2c3e50; }
             h2 { color: #3498db; }
@@ -30,206 +28,172 @@ def local_css(file_name):
 
 local_css("style.css")
 
-# Header
-def load_image(image_path):
-    try:
-        # Try to find the file in the same directory
-        path = os.path.join(os.path.dirname(__file__), image_path)
-        return Image.open(path)
-    except FileNotFoundError:
-        st.warning(f"Image '{image_path}' not found. Using placeholder.")
-        # Return a blank image or placeholder
-        return Image.new('RGB', (150, 150), color='gray')
+# Header Section
+def create_header():
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        try:
+            img = Image.open("profile.jpg")
+            st.image(img, width=150, caption="SaiKumar Srinivas")
+        except FileNotFoundError:
+            st.image(Image.new('RGB', (150, 150), caption="SaiKumar Srinivas"))
 
-col1, col2 = st.columns([1, 3])
-with col1:
-    img = load_image("profile.jpg")
-    st.image(img, width=150, caption="SaiKumar Srinivas")
-
-with col2:
-    st.title("Saikumar Srinivas")
-    st.subheader("Data Analytics Professional")
-    st.write("""
-    Worcester, MA | +1 (508) 365 9639 | 
-    [saikumar.srinivas123@gmail.com](mailto:saikumar.srinivas123@gmail.com) | 
-    [LinkedIn](https://www.linkedin.com/in/saikumar-srinivas/)
-    """)
-    st.write("""
-    Data Analyst with expertise in Snowflake, Power BI, Python, and Machine Learning. 
-    Passionate about transforming data into actionable insights and building efficient data systems.
-    """)
+    with col2:
+        st.title("Saikumar Srinivas")
+        st.subheader("Data Analytics Professional")
+        st.write("""
+        Worcester, MA | +1 (508) 365 9639 | 
+        [saikumar.srinivas123@gmail.com](mailto:saikumar.srinivas123@gmail.com) | 
+        [LinkedIn](https://www.linkedin.com/in/saikumar-srinivas/) |
+        [GitHub](https://github.com/rdx-code77)
+        """)
+        st.write("""
+        Data Analyst with expertise in Snowflake, Power BI, Python, and Machine Learning. 
+        Passionate about transforming data into actionable insights.
+        """)
 
 # Navigation
-st.markdown("---")
-st.sidebar.title("Navigation")
-section = st.sidebar.radio("Go to", 
-                          ["About", "Education", "Experience", "Projects", "Skills", "Contact","Chat"])
+def create_navigation():
+    st.markdown("---")
+    st.sidebar.title("Navigation")
+    return st.sidebar.radio("Go to", 
+                          ["About", "Education", "Experience", "Projects", "Skills", "Contact", "Chat"])
 
 # About Section
-if section == "About":
+def show_about():
     st.header("About Me")
     st.write("""
-    I am a Data Analytics professional currently pursuing my Master's degree at Clark University with a 3.9 GPA. 
-    I have hands-on experience in data engineering, visualization, and machine learning across various industries.
+    Data Analytics professional currently pursuing my Master's degree at Clark University (3.9 GPA).
+    Hands-on experience in data engineering, visualization, and machine learning.
     
-    My technical expertise spans:
+    Technical Expertise:
     - Data Warehousing (Snowflake, SQL)
     - Data Visualization (Power BI, Tableau)
     - Programming (Python, R, SQL)
     - Machine Learning & NLP
     - Cloud Technologies (AWS, Docker, Kubernetes)
-    
-    I'm passionate about solving complex problems with data-driven approaches and building systems that deliver value.
     """)
 
 # Education Section
-elif section == "Education":
+def show_education():
     st.header("Education")
     
     with st.expander("Clark University, Worcester, MA", expanded=True):
         st.subheader("Master of Science in Data Analytics")
         st.write("Aug 2023 - May 2025 | CGPA: 3.9/4.0")
         st.write("""
-        **Courses:** Mathematical Statistics, Machine Learning, Agile Methodologies, 
+        Courses: Mathematical Statistics, Machine Learning, Agile Methodologies, 
         Data Visualization, Business Intelligence
         """)
     
-    with st.expander("AMC Engineering College, Bengaluru, Karnataka, India"):
+    with st.expander("AMC Engineering College, Bengaluru, India"):
         st.subheader("Bachelor of Science in Computers")
         st.write("July 2018 - Aug 2022 | CGPA: 3.7/4.0")
 
 # Experience Section
-elif section == "Experience":
+def show_experience():
     st.header("Professional Experience")
     
-    with st.expander("Code Ninjas, Northborough, MA - Program Coordinator / Data Analyst", expanded=True):
-        st.subheader("Program Coordinator / Data Analyst")
-        st.write("Feb 2025 - Present")
-        st.write("""
-        - Spearheaded migration from legacy billing system to Snowflake, optimizing data storage and compute costs by 15%
-        - Designed efficient data models in Snowflake using clustering keys and automatic scaling
-        - Automated legacy billing reconciliation by SQL stored procedures in Snowflake, reduced validation time by 25%
-        - Conducted data lineage analysis to transit from legacy systems, documenting in Snowflake's data dictionary
-        - Replaced legacy ETL jobs with Snowflake Snowpipe for near-real-time data ingestion, cutting pipeline latency by 40%
-        - Automated reporting and scheduling workflows using Google Sheets + App Script, reducing administrative time by 30%
-        - Contributed to a 90% increase in student retention by analyzing feedback and optimizing lesson delivery
-        """)
+    experiences = [
+        {
+            "title": "Code Ninjas, Northborough, MA - Program Coordinator / Data Analyst",
+            "period": "Feb 2025 - Present",
+            "details": [
+                "Spearheaded migration from legacy billing system to Snowflake",
+                "Designed efficient data models in Snowflake",
+                "Automated legacy billing reconciliation",
+                "Reduced pipeline latency by 40%"
+            ]
+        },
+        {
+            "title": "Clark University - Teaching Assistant in Data Visualization",
+            "period": "Dec 2024 - May 2025",
+            "details": [
+                "Guided students in Tableau and Power BI",
+                "Applied advanced visualization features",
+                "Data modeling and blending"
+            ]
+        },
+        {
+            "title": "Digit Insurance - Graduate Trainee Engineer",
+            "period": "Aug 2022 - Aug 2023",
+            "details": [
+                "Developed email ticketing system",
+                "Automated web processes with Selenium",
+                "Deployed applications in Docker & Kubernetes"
+            ]
+        }
+    ]
     
-    with st.expander("Clark University, Worcester, MA - Teaching Assistant in Data Visualization"):
-        st.subheader("Teaching Assistant in Data Visualization")
-        st.write("Dec 2024 - May 2025")
-        st.write("""
-        - Guided students in data visualization using Tableau and Power BI
-        - Applied advanced features like Calculated Fields, LOD Expressions, DAX, and Dynamic Parameters
-        - Gained hands-on experience in data modelling, blending, relationships for visualization optimization
-        """)
-    
-    with st.expander("Digit Insurance, Karnataka, India - Graduate Trainee Engineer / Software Development"):
-        st.subheader("Graduate Trainee Engineer / Software Development")
-        st.write("Aug 2022 - Aug 2023")
-        st.write("""
-        - Developed and optimized an email ticketing system, enhancing service efficiency by 15%
-        - Automated web-based processes using Selenium, increasing bot efficiency by 20%
-        - Deployed and managed applications in Docker & Kubernetes, reducing deployment time by 30%
-        - Utilized Python (Pandas, NumPy) for data analysis, improving processing speed by 25%
-        - Designed RESTful APIs using Flask for seamless data exchange between services
-        - Reduced system downtime by 35% through troubleshooting and debugging automation scripts
-        - Worked in agile environment implementing user-driven enhancements
-        """)
+    for exp in experiences:
+        with st.expander(exp["title"], expanded=(exp == experiences[0])):
+            st.subheader(exp["title"].split("-")[0].strip())
+            st.write(exp["period"])
+            for detail in exp["details"]:
+                st.write(f"- {detail}")
 
 # Projects Section
-elif section == "Projects":
+def show_projects():
     st.header("Projects")
     
-    with st.expander("Language Data Analytics & Computational Linguistics", expanded=True):
-        st.subheader("Language Data Analytics & Computational Linguistics")
-        st.write("Clark University, Worcester, MA")
-        st.write("""
-        **Project Overview:** Built strong language data systems to work with speech and text in multiple languages.
-        
-        - Built language datasets from scratch, adapting quickly to changing project needs
-        - Worked with multilingual speech and text data, building Finite-State Transducers
-        - Developed statistical language models to improve NLP tool accuracy
-        - Analyzed linguistic data patterns using SQL, R, and MATLAB
-        """)
+    projects = [
+        {
+            "title": "Language Data Analytics & Computational Linguistics",
+            "location": "Clark University",
+            "details": [
+                "Built multilingual datasets",
+                "Developed statistical language models",
+                "Analyzed linguistic patterns"
+            ]
+        },
+        {
+            "title": "Automated Reporting System",
+            "location": "",
+            "details": [
+                "Python and Power BI solution",
+                "Reduced reporting time by 60%",
+                "Implemented data validation checks"
+            ]
+        }
+    ]
     
-    # Add more projects as needed
-    with st.expander("Automated Reporting System"):
-        st.subheader("Automated Reporting System")
-        st.write("""
-        - Developed a system to automate business reporting using Python and Power BI
-        - Reduced manual reporting time by 60%
-        - Implemented data validation checks to ensure report accuracy
-        """)
+    for proj in projects:
+        with st.expander(proj["title"], expanded=(proj == projects[0])):
+            st.subheader(proj["title"])
+            if proj["location"]:
+                st.write(proj["location"])
+            for detail in proj["details"]:
+                st.write(f"- {detail}")
 
 # Skills Section
-elif section == "Skills":
+def show_skills():
     st.header("Technical Skills")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
         st.subheader("Programming")
-        st.write("""
-        - R
-        - Python
-        - SQL
-        """)
+        st.write("- Python\n- R\n- SQL")
         
         st.subheader("Database")
-        st.write("""
-        - MySQL
-        - PostgreSQL
-        - Microsoft SQL
-        - MongoDB
-        - Oracle EE
-        """)
-    
+        st.write("- Snowflake\n- PostgreSQL\n- MongoDB")
+
     with col2:
-        st.subheader("Tools/CI-CD")
-        st.write("""
-        - Jira Software
-        - Kubernetes
-        - AWS Practitioner
-        - FMEA, SWOT Analysis
-        - Mind Manager, Lucid Chart
-        - ERP, CRM, SAP
-        - Snowflake, Oracle Cloud
-        - RACI Matrix, WBS
-        - Resource Allocation, Risk Analysis
-        - Novologix system, Rally, Visio
-        """)
+        st.subheader("Data Tools")
+        st.write("- Power BI\n- Tableau\n- Pandas\n- NumPy")
         
-        st.subheader("Data & Visualization")
-        st.write("""
-        - Pandas, NumPy
-        - Matplotlib, Seaborn, Plotly
-        - Tweepy, EDA, Trend Analysis
-        - Tableau, Power BI
-        - Flask, Streamlit
-        """)
-    
+        st.subheader("ML/DL")
+        st.write("- Scikit-learn\n- TensorFlow\n- PyTorch")
+
     with col3:
-        st.subheader("ML & Deep Learning")
-        st.write("""
-        - Scikit-learn
-        - TensorFlow, PyTorch, Keras
-        - Transformers, YOLOv8
-        - CNNs, RNNs
-        - DSA
-        """)
-        
         st.subheader("NLP")
-        st.write("""
-        - RoBERTa, GPT-2, Pegasus
-        - Hugging Face, LangChain
-        - NLTK, SpaCy
-        - Sentiment Analysis
-        - QA Systems, Summarization
-        """)
+        st.write("- Transformers\n- NLTK\n- SpaCy")
+        
+        st.subheader("Cloud/DevOps")
+        st.write("- AWS\n- Docker\n- Kubernetes")
 
 # Contact Section
-elif section == "Contact":
+def show_contact():
     st.header("Contact Me")
     
     contact_form = """
@@ -237,21 +201,109 @@ elif section == "Contact":
         <input type="hidden" name="_captcha" value="false">
         <input type="text" name="name" placeholder="Your name" required>
         <input type="email" name="email" placeholder="Your email" required>
-        <textarea name="message" placeholder="Your message here"></textarea>
-        <button type="submit">Send</button>
+        <textarea name="message" placeholder="Your message"></textarea>
+        <button type="submit">Send Message</button>
     </form>
     """
     
     st.markdown(contact_form, unsafe_allow_html=True)
     
-    # Add social media links
     st.write("""
-    ### Connect with me:
-    - [LinkedIn](https://www.linkedin.com/in/saikumar-srinivas/)
+    ### Direct Contact:
     - Email: [saikumar.srinivas123@gmail.com](mailto:saikumar.srinivas123@gmail.com)
     - Phone: +1 (508) 365 9639
+    - LinkedIn: [linkedin.com/in/saikumar-srinivas/](https://www.linkedin.com/in/saikumar-srinivas/)
     """)
 
+# Chat Section
+# Chat Section
+def show_chat():
+    st.header("Chat with My AI Assistant")
+    
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = [
+            {"role": "assistant", "content": "Hi! I'm an AI assistant for SaiKumar's portfolio. Ask me about his experience, skills, or projects!"}
+        ]
+    
+    # Display chat messages
+    for message in st.session_state.messages:
+        # Use None for avatar to use default icons
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+    
+    # Chat input
+    if prompt := st.chat_input("Type your question here...", key="portfolio_chat_input"):
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        
+        # Display assistant response
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                # Process the user's question
+                prompt_lower = prompt.lower()
+                
+                if any(word in prompt_lower for word in ["hi", "hello", "hey"]):
+                    response = "Hello! How can I help you learn more about SaiKumar today?"
+                elif any(word in prompt_lower for word in ["experience", "work", "job"]):
+                    response = """**Professional Experience:**
+                    - Code Ninjas: Data Analyst (Snowflake, automation)
+                    - Clark University: Teaching Assistant
+                    - Digit Insurance: Software Engineer"""
+                elif any(word in prompt_lower for word in ["skill", "technology"]):
+                    response = """**Technical Skills:**
+                    - Data: Snowflake, Power BI, SQL
+                    - Programming: Python, R
+                    - ML: Scikit-learn, TensorFlow"""
+                elif "project" in prompt_lower:
+                    response = """**Projects:**
+                    - Language Data Analytics
+                    - Automated Reporting System"""
+                elif any(word in prompt_lower for word in ["contact", "email", "phone"]):
+                    response = """**Contact:**
+                    Email: saikumar.srinivas123@gmail.com
+                    Phone: +1 (508) 365 9639"""
+                else:
+                    response = "I can discuss SaiKumar's experience, skills, projects, and education. What would you like to know?"
+                
+                # Typing animation
+                message_placeholder = st.empty()
+                full_response = ""
+                for chunk in response.split():
+                    full_response += chunk + " "
+                    message_placeholder.markdown(full_response + "▌")
+                    time.sleep(0.05)
+                message_placeholder.markdown(full_response)
+                
+                # Add to history
+                st.session_state.messages.append({"role": "assistant", "content": full_response})
+                
 # Footer
-st.markdown("---")
-st.markdown(f"© {datetime.now().year} Sai Kumar Srinivas. All rights reserved.")
+def create_footer():
+    st.markdown("---")
+    st.markdown(f"© {datetime.now().year} Sai Kumar Srinivas. All rights reserved.")
+
+# Main App
+def main():
+    create_header()
+    section = create_navigation()
+    
+    if section == "About":
+        show_about()
+    elif section == "Education":
+        show_education()
+    elif section == "Experience":
+        show_experience()
+    elif section == "Projects":
+        show_projects()
+    elif section == "Skills":
+        show_skills()
+    elif section == "Contact":
+        show_contact()
+    elif section == "Chat":
+        show_chat()
+    
+    create_footer()
+
+if __name__ == "__main__":
+    main()

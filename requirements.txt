@@ -11,3 +11,6 @@ openpyxl
 Pillow
 openai
 python-dotenv
+transformers
+Torch
+datetime
