@@ -38,7 +38,6 @@ def create_header():
         except FileNotFoundError:
             st.image(Image.new('RGB', (150, 150), caption="SaiKumar Srinivas"))
 
-<<<<<<< HEAD
     with col2:
         st.title("Saikumar Srinivas")
         st.subheader("Data Analytics Professional")
@@ -52,26 +51,6 @@ def create_header():
         Data Analyst with expertise in Snowflake, Power BI, Python, and Machine Learning. 
         Passionate about transforming data into actionable insights.
         """)
-=======
-col1, col2 = st.columns([1, 3])
-with col1:
-    img = load_image("profile.jpg")
-    st.image(img, width=150, caption="SaiKumar Srinivas")
-
-with col2:
-    st.title("Saikumar Srinivas")
-    st.subheader("Data Analytics Professional")
-    st.write("""
-    Worcester, MA | +1 (508) 365 9639 | 
-    [saikumar.srinivas123@gmail.com](mailto:saikumar.srinivas123@gmail.com) | 
-    [LinkedIn](https://www.linkedin.com/in/saikumar-srinivas/) |
-    [GitHub](https://github.com/rdx-code77)
-    """)
-    st.write("""
-    Data Analyst with expertise in Snowflake, Power BI, Python, and Machine Learning. 
-    Passionate about transforming data into actionable insights and building efficient data systems.
-    """)
->>>>>>> 02dc2800ae499ae46f56c437d9c62c8002aa935c
 
 # Navigation
 def create_navigation():
