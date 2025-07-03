@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 from PIL import Image
 import time  # For chat typing animation
+import base64  # For image handling
 
 # Configure page
 st.set_page_config(
@@ -33,10 +34,16 @@ def create_header():
     col1, col2 = st.columns([1, 3])
     with col1:
         try:
+            # Try to load local image first
             img = Image.open("profile.jpg")
             st.image(img, width=150, caption="SaiKumar Srinivas")
         except FileNotFoundError:
-            st.image(Image.new('RGB', (150, 150), caption="SaiKumar Srinivas"))
+            try:
+                # Fallback to a placeholder image if local file not found
+                placeholder_img = Image.new('RGB', (150, 150), color='lightgray')
+                st.image(placeholder_img, width=150, caption="Profile Image")
+            except Exception as e:
+                st.warning(f"Couldn't load profile image: {str(e)}")
 
     with col2:
         st.title("Saikumar Srinivas")
@@ -216,7 +223,6 @@ def show_contact():
     """)
 
 # Chat Section
-# Chat Section
 def show_chat():
     st.header("Chat with My AI Assistant")
     
@@ -228,7 +234,6 @@ def show_chat():
     
     # Display chat messages
     for message in st.session_state.messages:
-        # Use None for avatar to use default icons
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
     
@@ -285,25 +290,29 @@ def create_footer():
 
 # Main App
 def main():
-    create_header()
-    section = create_navigation()
-    
-    if section == "About":
-        show_about()
-    elif section == "Education":
-        show_education()
-    elif section == "Experience":
-        show_experience()
-    elif section == "Projects":
-        show_projects()
-    elif section == "Skills":
-        show_skills()
-    elif section == "Contact":
-        show_contact()
-    elif section == "Chat":
-        show_chat()
-    
-    create_footer()
+    try:
+        create_header()
+        section = create_navigation()
+        
+        if section == "About":
+            show_about()
+        elif section == "Education":
+            show_education()
+        elif section == "Experience":
+            show_experience()
+        elif section == "Projects":
+            show_projects()
+        elif section == "Skills":
+            show_skills()
+        elif section == "Contact":
+            show_contact()
+        elif section == "Chat":
+            show_chat()
+        
+        create_footer()
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+        st.info("Please refresh the page or try again later.")
 
 if __name__ == "__main__":
     main()
