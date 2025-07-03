@@ -4,7 +4,6 @@ import os
 from PIL import Image
 
 
-
 # Configure page
 st.set_page_config(
     page_title="Sai Kumar Srinivas | Data Analytics Portfolio",
@@ -47,10 +46,10 @@ def load_image(image_path):
 col1, col2 = st.columns([1, 3])
 with col1:
     img = load_image("profile.jpg")
-    st.image(img, width=150, caption="Your Name")
+    st.image(img, width=150, caption="Saikumar Srinivas")
 
 with col2:
-    st.title("Sai Kumar Srinivas")
+    st.title("Saikumar Srinivas")
     st.subheader("Data Analytics Professional")
     st.write("""
     Worcester, MA | +1 (508) 365 9639 | 
@@ -58,7 +57,7 @@ with col2:
     [LinkedIn](https://www.linkedin.com/in/saikumar-srinivas/)
     """)
     st.write("""
-    Data Analyst with expertise in Snowflake, Power BI, Python, and Machine Learning. 
+    Data Analyst with expertise in Python, Power BI, Snowflake, and Machine Learning. 
     Passionate about transforming data into actionable insights and building efficient data systems.
     """)
 
@@ -72,8 +71,11 @@ section = st.sidebar.radio("Go to",
 if section == "About":
     st.header("About Me")
     st.write("""
-    I am a Data Analytics professional currently pursuing my Master's degree at Clark University with a 3.9 GPA. 
-    I have hands-on experience in data engineering, visualization, and machine learning across various industries.
+    I am a Data Analytics professional with a Master's degree from Clark University, where I graduated with a 3.7 GPA. 
+    I've worked across diverse sectors including insurance, education, and client-facing environments, which has given 
+    me a strong understanding of the importance of handling sensitive data responsibly. 
+    In addition to my experience in data engineering, visualization, and machine learning, 
+    I've also fine-tuned large language models (LLMs) to address domain-specific needs.
     
     My technical expertise spans:
     - Data Warehousing (Snowflake, SQL)
@@ -91,7 +93,7 @@ elif section == "Education":
     
     with st.expander("Clark University, Worcester, MA", expanded=True):
         st.subheader("Master of Science in Data Analytics")
-        st.write("Aug 2023 - May 2025 | CGPA: 3.9/4.0")
+        st.write("Aug 2023 - May 2025 | CGPA: 3.7/4.0")
         st.write("""
         **Courses:** Mathematical Statistics, Machine Learning, Agile Methodologies, 
         Data Visualization, Business Intelligence
@@ -176,7 +178,6 @@ elif section == "Skills":
         st.write("""
         - R
         - Python
-        - C#
         - JavaScript
         - SQL
         - HTML
