@@ -65,7 +65,7 @@ with col2:
 st.markdown("---")
 st.sidebar.title("Navigation")
 section = st.sidebar.radio("Go to", 
-                          ["About", "Education", "Experience", "Projects", "Skills", "Contact"])
+                          ["About", "Education", "Experience", "Projects", "Skills", "Contact"," Chatbot"])
 
 # About Section
 if section == "About":
@@ -258,6 +258,10 @@ elif section == "Contact":
     - Email: [saikumar.srinivas123@gmail.com](mailto:saikumar.srinivas123@gmail.com)
     - Phone: +1 (508) 365 9639
     """)
+
+elif section == "Chatbot":
+    st.header("Chatbot")
+    st.write("This section is under development. Stay tuned for updates!")
 
 # Footer
 st.markdown("---")
